@@ -20,7 +20,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
     SDL_Window* win = SDL_CreateWindow("Graphics",
                                        SDL_WINDOWPOS_CENTERED,
                                        SDL_WINDOWPOS_CENTERED,
-                                       500, 500, 0);
+                                       1000, 1000, 0);
 
     SDL_Renderer* renderer = SDL_CreateRenderer(win, -1, 0);
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
@@ -36,16 +36,16 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
 
     while (!close) {
         SDL_Event event;
-        SDL_RenderDrawLine(renderer, 250, 0, 250, 500);
-        SDL_RenderDrawLine(renderer, 0, 250, 500, 250);
-        for (int i = 0; i <= 500;i+= 25) {
-            SDL_RenderDrawLine(renderer, 0+i, 247, 0+i, 253);
-            SDL_RenderDrawLine(renderer, 247, 0+i, 253, 0+i);
+        SDL_RenderDrawLine(renderer, 500, 0, 500, 1000);
+        SDL_RenderDrawLine(renderer, 0, 500, 1000, 500);
+        for (int i = 0; i <= 1000;i+= 25) {
+            SDL_RenderDrawLine(renderer, 0+i, 495, 0+i, 505);
+            SDL_RenderDrawLine(renderer, 495, 0+i, 505, 0+i);
         }
-        SDL_RenderDrawLine(renderer, 250+a[0]*25, 250-a[1]*25, 250+a[2]*25, 250-a[3]*25);
-        SDL_RenderDrawLine(renderer, 250 + a[2] * 25, 250 - a[3] * 25, 250 + a[4] * 25, 250 - a[5] * 25);
-        SDL_RenderDrawLine(renderer, 250 + a[4] * 25, 250 - a[5] * 25, 250 + a[6] * 25, 250 - a[7] * 25);
-        SDL_RenderDrawLine(renderer, 250 + a[6] * 25, 250 - a[7] * 25, 250 + a[0] * 25, 250 - a[1] * 25);
+        SDL_RenderDrawLine(renderer, 500+a[0]*25, 500 -a[1]*25, 500 +a[2]*25, 500 -a[3]*25);
+        SDL_RenderDrawLine(renderer, 500 + a[2] * 25, 500 - a[3] * 25, 500 + a[4] * 25, 500 - a[5] * 25);
+        SDL_RenderDrawLine(renderer, 500 + a[4] * 25, 500 - a[5] * 25, 500 + a[6] * 25, 500 - a[7] * 25);
+        SDL_RenderDrawLine(renderer, 500 + a[6] * 25, 500 - a[7] * 25, 500 + a[0] * 25, 500 - a[1] * 25);
         // Events management
         while (SDL_PollEvent(&event)) {
             switch (event.type) {

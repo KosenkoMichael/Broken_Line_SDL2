@@ -7,6 +7,7 @@
 #include <cmath>
 #include<windows.h>
 #include<fstream>
+#include<stdexcept>
 
 using namespace std;
 
@@ -29,8 +30,8 @@ namespace broken_line {
 		Point():x(0),y(0){}
 		Point(T _x, T _y) :x(_x), y(_y) {}
 		Point(const Point<T>& rhs) :x(rhs.x), y(rhs.y) {}
-		float len(Point& rhs) {
-			return static_cast<float>(sqrt((x - rhs.x) * (x - rhs.x) + (y - rhs.y) * (y - rhs.y)));
+		double len(Point& rhs) {
+			return sqrt((x - rhs.x) * (x - rhs.x) + (y - rhs.y) * (y - rhs.y));
 		}
 		bool operator == (Point<T> rhs) {
 			if ((x == rhs.x) && (y == rhs.y))
@@ -123,6 +124,8 @@ namespace broken_line {
 			std::swap(_data, rhs._data);
 		}
 		Point<T>& operator[](size_t index) { //Оператор для чтения/записи по индексу
+			if (index >= _size)
+				throw ("index is out of range");
 			return *_data[index];
 		}
 		BrokenLine<T> operator+(BrokenLine<T>& rhs) { // Сложение двух ломаных
@@ -174,13 +177,50 @@ namespace broken_line {
 			cin >> h;
 			BrokenLine line(x);
 			line.push_back(y);
-			Point f(y.x, y.y + h);
-			line.push_back(f);
-			Point e(random(-f.x, f.x), f.y);
-			line.push_back(e);
-			cout << line << endl;
 
-			for (int i = 0; i < line.size(); ++i)
+			if (b != d) {
+				double x1 = 0.0;
+				double x2 = 0.0;
+				double y1 = 0.0;
+				double y2 = 0.0;
+
+				double k1 = (line[1].y - line[0].y) / (line[1].x - line[0].x);
+				double k2 = (-1) / ((line[1].y - line[0].y) / (line[1].x - line[0].x));
+
+				for (double i = -abs(line[1].x) - h; i <= abs(line[1].x) + h; i += 0.1)
+					for (double j = -abs(line[1].y) - h; j <= abs(line[1].y) + h; j += 0.1) {
+						Point test_point(i, j);
+						if ((j = k2 * (i - line[1].x) + line[1].y) && (h-1.0 <= test_point.len(line[1]) <= h+1.0 )) {
+							x1 = i;
+							y1 = j;
+							break;
+						}
+					}
+				Point f(x1, y1);
+				line.push_back(f);
+				double range = abs(line[2].x + (line[0].x - line[1].x) / 2);
+				for (double i = abs(line[2].x) + h; i >= -abs(line[2].x) - h; i -= 0.1)
+					for (double j = abs(line[2].y) + h; j >= -abs(line[2].y) - h; j -= 0.1) {
+						Point test_point(i, j);
+						if ((j = k1 * (i - line[2].x) + line[2].y) && (range-1.0 <= test_point.len(line[2]) <= range+1.0)) {
+							x2 = i;
+							y2 = j;
+							break;
+						}
+					}
+				Point zx(x2, y2);
+				line.push_back(zx);
+			}else
+			{
+				Point p3(line[1].x, line[1].y + h);
+			line.push_back(p3);
+			Point p4(line[2].x + (line[0].x-line[1].x)/2, line[2].y);
+			line.push_back(p4);
+			}
+
+			cout << line;
+
+			for (int i = 0; i < 4; ++i)
 				file << line[i].x << " " << line[i].y << " ";
 		}
 		else
