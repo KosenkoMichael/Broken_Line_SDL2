@@ -38,9 +38,13 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
         SDL_Event event;
         SDL_RenderDrawLine(renderer, 500, 0, 500, 1000);
         SDL_RenderDrawLine(renderer, 0, 500, 1000, 500);
+        SDL_RenderDrawLine(renderer, 980, 490, 1000, 500);
+        SDL_RenderDrawLine(renderer, 980, 510, 1000, 500);
+        SDL_RenderDrawLine(renderer, 490, 20, 500, 0);
+        SDL_RenderDrawLine(renderer, 510, 20, 500, 0);
         for (int i = 0; i <= 1000;i+= 25) {
             SDL_RenderDrawLine(renderer, 0+i, 495, 0+i, 505);
-            SDL_RenderDrawLine(renderer, 495, 0+i, 505, 0+i);
+            SDL_RenderDrawLine(renderer, 495, 25+i, 505, 25+i);
         }
         SDL_RenderDrawLine(renderer, 500+a[0]*25, 500 -a[1]*25, 500 +a[2]*25, 500 -a[3]*25);
         SDL_RenderDrawLine(renderer, 500 + a[2] * 25, 500 - a[3] * 25, 500 + a[4] * 25, 500 - a[5] * 25);

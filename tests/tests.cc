@@ -5,6 +5,12 @@
 
 using namespace broken_line;
 
+TEST(FunctionsTests, PointDoubleTest) {
+	Point a(-5.5, 5.5);
+	Point b(-2.2, 2.2);
+	EXPECT_NEAR(a.len(b), 4.6, 0.1);
+}
+
 TEST(FunctionsTests, PointTest) {
 	Point<int> a;
 	Point<int> b(1, 0);

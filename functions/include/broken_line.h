@@ -141,6 +141,15 @@ namespace broken_line {
 			swap(copy);
 			return *this;
 		}
+		bool operator==(BrokenLine<T>& other) {
+			if (_size != other._size)
+				throw ("don`t equal");
+			for (int i = 0; i < _size; ++i) {
+				if (!((*_data[i]) == other[i]))
+					return false;
+			}
+			return true;
+		}
 		int size() {
 			return _size;
 		}
@@ -187,10 +196,10 @@ namespace broken_line {
 				double k1 = (line[1].y - line[0].y) / (line[1].x - line[0].x);
 				double k2 = (-1) / ((line[1].y - line[0].y) / (line[1].x - line[0].x));
 
-				for (double i = -abs(line[1].x) - h; i <= abs(line[1].x) + h; i += 0.1)
-					for (double j = -abs(line[1].y) - h; j <= abs(line[1].y) + h; j += 0.1) {
-						Point test_point(i, j);
-						if ((j = k2 * (i - line[1].x) + line[1].y) && (h-1.0 <= test_point.len(line[1]) <= h+1.0 )) {
+				for (double i = abs(line[1].x) - h; i <= abs(line[1].x) + h; i += 0.1)
+					for (double j = abs(line[1].y) - h; j <= abs(line[1].y) + h; j += 0.1) {
+						Point<double> test_point(i, j);
+						if ((j = k2 * (i - line[1].x) + line[1].y) && (h-0.1 <= round(test_point.len(line[1])*100) <= h+0.1 )) {
 							x1 = i;
 							y1 = j;
 							break;
@@ -198,11 +207,11 @@ namespace broken_line {
 					}
 				Point f(x1, y1);
 				line.push_back(f);
-				double range = abs(line[2].x + (line[0].x - line[1].x) / 2);
-				for (double i = abs(line[2].x) + h; i >= -abs(line[2].x) - h; i -= 0.1)
-					for (double j = abs(line[2].y) + h; j >= -abs(line[2].y) - h; j -= 0.1) {
+				double range = line[0].len(line[1])/2;
+				for (double i = abs(line[2].x) + h; i >= abs(line[2].x) - h; i -= 0.1)
+					for (double j = abs(line[2].y) + h; j >= abs(line[2].y) - h; j -= 0.1) {
 						Point test_point(i, j);
-						if ((j = k1 * (i - line[2].x) + line[2].y) && (range-1.0 <= test_point.len(line[2]) <= range+1.0)) {
+						if ((j = k1 * (i - line[2].x) + line[2].y) && (range-1.0 <= round(test_point.len(line[2])*100) <= range+1.0)) {
 							x2 = i;
 							y2 = j;
 							break;
@@ -225,5 +234,6 @@ namespace broken_line {
 		}
 		else
 			cout << "no file open" << endl;
+		file.close();
 	}
 };
