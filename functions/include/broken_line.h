@@ -8,6 +8,7 @@
 #include<windows.h>
 #include<fstream>
 #include<stdexcept>
+#include <complex>
 
 using namespace std;
 

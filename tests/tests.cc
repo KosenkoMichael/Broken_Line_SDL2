@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 #include "../functions/include/broken_line.h"
-#include <stdexcept>
-#include <iostream>
 
 using namespace broken_line;
 
@@ -22,6 +20,10 @@ TEST(FunctionsTests, PointTest) {
 }
 
 TEST(FunctionsTests, BrokenLineTest) {
+	Point<std::complex<int>> suu(2, 3);
+	BrokenLine su(suu);
+	Point<std::complex<float>> suu_2(2.2, 3.3);
+	BrokenLine su_2(suu_2);
 	BrokenLine<int> line_1();
 	Point point_2(1.1, 1.1);
 	BrokenLine line_2(point_2);
