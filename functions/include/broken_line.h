@@ -5,9 +5,9 @@
 #include <random>
 #include <conio.h>
 #include <cmath>
-#include<windows.h>
-#include<fstream>
-#include<stdexcept>
+#include <windows.h>
+#include <fstream>
+#include <stdexcept>
 #include <complex>
 
 using namespace std;
@@ -43,14 +43,11 @@ namespace broken_line {
 			x = rhs.x;
 			y = rhs.y;
 		}
-		void print() {
-			cout << x << " " << y << endl;
-		}
 	};
 	template<typename T>
-	ostream& operator<<(ostream& potok, Point<T>& point) {
+	ostream& operator<<(ostream& stream, Point<T>& point) {
 		cout << point.x << " " << point.y;
-		return potok;
+		return stream;
 	}
 
 	template<typename T>
@@ -144,7 +141,7 @@ namespace broken_line {
 		}
 		bool operator==(BrokenLine<T>& other) {
 			if (_size != other._size)
-				throw ("don`t equal");
+				return false;
 			for (int i = 0; i < _size; ++i) {
 				if (!((*_data[i]) == other[i]))
 					return false;
@@ -154,17 +151,13 @@ namespace broken_line {
 		int size() {
 			return _size;
 		}
-		void print() {
-			for (int i = 0; i < _size; ++i)
-				(*_data[i]).print();
-		}
 	};
 	template<typename T>
-	ostream& operator<<(ostream& potok, BrokenLine<T>& line) {
+	ostream& operator<<(ostream& stream, BrokenLine<T>& line) {
 		for (int i = 0; i < line.size(); ++i) {
 			cout << line[i] << endl;
 		}
-		return potok;
+		return stream;
 	}
 	void draw_trapezoid() {
 		double a, b, c, d, h;
