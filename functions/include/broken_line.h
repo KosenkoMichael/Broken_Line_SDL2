@@ -31,9 +31,6 @@ namespace broken_line {
 		Point():x(0),y(0){}
 		Point(T _x, T _y) :x(_x), y(_y) {}
 		Point(const Point<T>& rhs) :x(rhs.x), y(rhs.y) {}
-		double len(Point& rhs) {
-			return sqrt((x - rhs.x) * (x - rhs.x) + (y - rhs.y) * (y - rhs.y));
-		}
 		bool operator == (Point<T> rhs) {
 			if ((x == rhs.x) && (y == rhs.y))
 				return true;
@@ -43,7 +40,22 @@ namespace broken_line {
 			x = rhs.x;
 			y = rhs.y;
 		}
+		T get_x() {
+			return x;
+		}
+		T get_y() {
+			return y;
+		}
 	};
+	template<typename U>
+	double len(Point<complex<U>>& lhs, Point<complex<U>>& rhs) {
+		return sqrt(pow(lhs.get_x().real() - rhs.get_x().real(), 2) + pow(lhs.get_y().real() - rhs.get_y().real(), 2));
+	}
+	template<typename T>
+	double len(Point<T>& lhs, Point<T>& rhs) {
+		return sqrt(pow(lhs.get_x() - rhs.get_x(), 2) + pow(lhs.get_y() - rhs.get_y(), 2));
+	}
+	
 	template<typename T>
 	ostream& operator<<(ostream& stream, Point<T>& point) {
 		cout << point.x << " " << point.y;
@@ -110,12 +122,12 @@ namespace broken_line {
 			_data = copy;
 			_size++;
 		}
-		float len() { // Вычисление длины
-			float len = 0;
+		float full_len() { // Вычисление длины
+			float cur_len = 0;
 			for (int i = 1; i < _size; ++i) {
-				len += (*_data[i]).len(*_data[i - 1]);
+				cur_len += len((*_data[i]),(*_data[i - 1]));
 			}
-			return len;
+			return cur_len;
 		}
 		void swap(BrokenLine<T>& rhs)noexcept {
 			std::swap(_size, rhs._size);
@@ -193,7 +205,7 @@ namespace broken_line {
 				for (double i = abs(line[1].x) - h; i <= abs(line[1].x) + h; i += 0.1)
 					for (double j = abs(line[1].y) - h; j <= abs(line[1].y) + h; j += 0.1) {
 						Point<double> test_point(i, j);
-						if ((j = k2 * (i - line[1].x) + line[1].y) && (h-0.1 <= round(test_point.len(line[1])*100) <= h+0.1 )) {
+						if ((j = k2 * (i - line[1].x) + line[1].y) && (h-0.1 <= round(len(test_point,line[1])*100) <= h+0.1 )) {
 							x1 = i;
 							y1 = j;
 							break;
@@ -201,11 +213,11 @@ namespace broken_line {
 					}
 				Point f(x1, y1);
 				line.push_back(f);
-				double range = line[0].len(line[1])/2;
+				double range = len(line[0],line[1])/2;
 				for (double i = abs(line[2].x) + h; i >= abs(line[2].x) - h; i -= 0.1)
 					for (double j = abs(line[2].y) + h; j >= abs(line[2].y) - h; j -= 0.1) {
 						Point test_point(i, j);
-						if ((j = k1 * (i - line[2].x) + line[2].y) && (range-1.0 <= round(test_point.len(line[2])*100) <= range+1.0)) {
+						if ((j = k1 * (i - line[2].x) + line[2].y) && (range-1.0 <= round(len(test_point,line[2])*100) <= range+1.0)) {
 							x2 = i;
 							y2 = j;
 							break;

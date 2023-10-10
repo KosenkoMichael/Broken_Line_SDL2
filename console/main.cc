@@ -23,7 +23,7 @@ int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmd
                                        1000, 1000, 0);
 
     SDL_Renderer* renderer = SDL_CreateRenderer(win, -1, 0);
-    SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 255, 151, 187, 255);
 
     double a[8];
     fstream file;
