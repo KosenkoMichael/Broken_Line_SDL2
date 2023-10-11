@@ -24,11 +24,11 @@ namespace broken_line {
 		return x;
 	}
 
-	template<typename T> 
+	template<typename T>
 	struct Point {
 		T x;
 		T y;
-		Point():x(0),y(0){}
+		Point() :x(0), y(0) {}
 		Point(T _x, T _y) :x(_x), y(_y) {}
 		Point(const Point<T>& rhs) :x(rhs.x), y(rhs.y) {}
 		bool operator == (Point<T> rhs) {
@@ -55,7 +55,7 @@ namespace broken_line {
 	double len(Point<T>& lhs, Point<T>& rhs) {
 		return sqrt(pow(lhs.get_x() - rhs.get_x(), 2) + pow(lhs.get_y() - rhs.get_y(), 2));
 	}
-	
+
 	template<typename T>
 	ostream& operator<<(ostream& stream, Point<T>& point) {
 		cout << point.x << " " << point.y;
@@ -84,10 +84,10 @@ namespace broken_line {
 			_size = size;
 		}
 		BrokenLine(int count, T x1, T x2, T y1, T y2) { // Диапазон точек
-				_data = new Point<T>*[count];
-				for (int i = 0; i < count; ++i)
-					_data[i] = new Point<T>(random(x1,x2), random(y1,y2));
-				_size = count;
+			_data = new Point<T>*[count];
+			for (int i = 0; i < count; ++i)
+				_data[i] = new Point<T>(random(x1, x2), random(y1, y2));
+			_size = count;
 		}
 		BrokenLine(BrokenLine<T>& other) {
 			_data = new Point<T>*[other._size];
@@ -113,8 +113,8 @@ namespace broken_line {
 		}
 		void push_front(Point<T>& point) { // Слоение вершины и ломаной
 			Point<T>** copy = new Point<T>*[_size + 1];
-			for (int i = 1; i < _size+1; ++i)
-				copy[i] = new Point<T>(*_data[i-1]);
+			for (int i = 1; i < _size + 1; ++i)
+				copy[i] = new Point<T>(*_data[i - 1]);
 			copy[0] = new Point<T>(point);
 			for (int i = 0; i < _size; ++i)
 				delete _data[i];
@@ -122,10 +122,11 @@ namespace broken_line {
 			_data = copy;
 			_size++;
 		}
+
 		float full_len() { // Вычисление длины
 			float cur_len = 0;
 			for (int i = 1; i < _size; ++i) {
-				cur_len += len((*_data[i]),(*_data[i - 1]));
+				cur_len += len((*_data[i]), (*_data[i - 1]));
 			}
 			return cur_len;
 		}
@@ -140,7 +141,7 @@ namespace broken_line {
 		}
 		BrokenLine<T> operator+(BrokenLine<T>& rhs) { // Сложение двух ломаных
 			BrokenLine<T> new_line(*_data[0]);
-			for (int i = 1; i <_size; ++i)
+			for (int i = 1; i < _size; ++i)
 				new_line.push_back(*_data[i]);
 			for (int i = 0; i < rhs._size; ++i)
 				new_line.push_back(*rhs._data[i]);
@@ -171,11 +172,21 @@ namespace broken_line {
 		}
 		return stream;
 	}
+	template<typename T>
+	BrokenLine<T>& operator+(Point<T>& point, BrokenLine<T>& line) {
+		line.push_front(point);
+		return line;
+	}
+	template<typename T>
+	BrokenLine<T>& operator+=(BrokenLine<T>& line, Point<T>& point) {
+		line.push_back(point);
+		return line;
+	}
 	void draw_trapezoid() {
 		double a, b, c, d, h;
 
 		fstream file;
-		file.open("C:\\Users\\79379\\Desktop\\Right_BL\\data_for_BL.txt");
+		file.open("C:\\Users\\Aspire 7\\Desktop\\Broken_Line_SDL2\\data_for_BL.txt");
 		if (file) {
 
 			cout << "Input x1 coordinates >>>" << endl;
@@ -205,7 +216,7 @@ namespace broken_line {
 				for (double i = abs(line[1].x) - h; i <= abs(line[1].x) + h; i += 0.1)
 					for (double j = abs(line[1].y) - h; j <= abs(line[1].y) + h; j += 0.1) {
 						Point<double> test_point(i, j);
-						if ((j = k2 * (i - line[1].x) + line[1].y) && (h-0.1 <= round(len(test_point,line[1])*100) <= h+0.1 )) {
+						if ((j = k2 * (i - line[1].x) + line[1].y) && (h - 0.1 <= round(len(test_point, line[1]) * 100) <= h + 0.1)) {
 							x1 = i;
 							y1 = j;
 							break;
@@ -213,11 +224,11 @@ namespace broken_line {
 					}
 				Point f(x1, y1);
 				line.push_back(f);
-				double range = len(line[0],line[1])/2;
+				double range = len(line[0], line[1]) / 2;
 				for (double i = abs(line[2].x) + h; i >= abs(line[2].x) - h; i -= 0.1)
 					for (double j = abs(line[2].y) + h; j >= abs(line[2].y) - h; j -= 0.1) {
 						Point test_point(i, j);
-						if ((j = k1 * (i - line[2].x) + line[2].y) && (range-1.0 <= round(len(test_point,line[2])*100) <= range+1.0)) {
+						if ((j = k1 * (i - line[2].x) + line[2].y) && (range - 1.0 <= round(len(test_point, line[2]) * 100) <= range + 1.0)) {
 							x2 = i;
 							y2 = j;
 							break;
@@ -225,12 +236,13 @@ namespace broken_line {
 					}
 				Point zx(x2, y2);
 				line.push_back(zx);
-			}else
+			}
+			else
 			{
 				Point p3(line[1].x, line[1].y + h);
-			line.push_back(p3);
-			Point p4(line[2].x + (line[0].x-line[1].x)/2, line[2].y);
-			line.push_back(p4);
+				line.push_back(p3);
+				Point p4(line[2].x + (line[0].x - line[1].x) / 2, line[2].y);
+				line.push_back(p4);
 			}
 
 			cout << line;

@@ -32,12 +32,22 @@ TEST(FunctionsTests, BrokenLineTest) {
 	EXPECT_TRUE(line_5[line_5.size() - 1] == point_3);
 	EXPECT_NEAR(line_5.full_len(), 14, 0.001);
 	line_5 = line_2;
-	BrokenLine<double> line_6 = line_5 + line_2;
+	BrokenLine<double> line_6 = line_5+line_2;
 }
 TEST(FunctionsTests, BrokenLineComplexTest) {
-	Point<std::complex<double>> complex_1({1,1}, {2,2});
+	Point<std::complex<double>> complex_1({ 1,1 }, { 2,2 });
 	Point<std::complex<double>> complex_2({ 1,5 }, { 5,1 });
 	EXPECT_NEAR(len(complex_1, complex_2), 3, 0.001);
+}
+TEST(FunctionsTests, BrokenLineTestsum) {
+	Point<int> point_1(2, 2);
+	BrokenLine<int> line(point_1);
+	Point<int> point_2(20, 20);
+	Point<int> point_3(-20, -20);
+	point_2 + line;
+	line += point_3;
+	EXPECT_TRUE(line[0] == point_2);
+	EXPECT_TRUE(line[line.size() - 1] == point_3);
 }
 TEST(FunctionsTests, SDL_File) {
 	draw_trapezoid();
